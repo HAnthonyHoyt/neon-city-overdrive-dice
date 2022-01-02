@@ -43,3 +43,9 @@ realize.
 
 So the goal here is to just strengthen this argument by allowing first a repeatable test script for all game masters to
 try and see for themselves.
+
+## Results
+
+You can see the results using the random method in [Random Die Results](RAND_RESULTS.md) page. Currently, I don't have
+the results for the fully calculated results, but I have partial results (up to 5 action dice) in the
+[Calculated Die Results](CALC_RESULTS.md) page.

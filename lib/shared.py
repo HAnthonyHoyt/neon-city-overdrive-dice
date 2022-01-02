@@ -6,21 +6,22 @@ MAX_SUCCESS_PERC = 70
 MAX_ACTION_DICE = 6
 
 
-def resolve_dice(action_dice: List[int], danger_dice: List[int]) -> List[int]:
-    for danger_die in sorted(danger_dice):
+def resolve_dice(action_roll: List[int], danger_roll: List[int]) -> List[int]:
+    for danger_die in sorted(danger_roll):
         try:
-            action_dice.remove(danger_die)
+            action_roll.remove(danger_die)
         except ValueError:
-            # Sometimes we try to remove a value that doesn't exist, that's fine here, just move on
+            # Sometimes we try to remove a value that doesn't exist and when you do that with Python, it raises this
+            # error.  So, we just ignore this error and move on since this is an expected situation.
             pass
 
-    return action_dice
+    return action_roll
 
 
-def resolve_roll(action_dice: List[int], danger_dice: Union[List[int], Tuple]) -> int:
-    result_dice = resolve_dice(action_dice, danger_dice)
+def resolve_roll(action_roll: List[int], danger_roll: Union[List[int], Tuple]) -> int:
+    remaining_dice = resolve_dice(action_roll, danger_roll)
 
-    top_result = max(result_dice or [0])
+    top_result = max(remaining_dice or [0])
     return top_result
 
 

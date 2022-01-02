@@ -1,4 +1,6 @@
+import datetime
 import itertools
+import time
 from multiprocessing import Pool, cpu_count
 from typing import List, Set, Tuple
 
@@ -8,9 +10,10 @@ dice_rolls = {}
 
 
 def get_dice_rolls(total_dice: int) -> Set[Tuple]:
-    # With this method, we're hoping to avoid calculating all the possible dice combinations over and over.
-    # Also, we're not returning 'duplicate' combinations.  For example: [1, 2] and [2, 1] are the same, so we don't
-    # need to check twice when we know the outcome should be same for both.
+    # To save a little time, we're going to generate each sequence once and then reuse it as much as possible
+    # This happens once per thread though, so it doesn't save as much time as I want. That being said, I'm not going to
+    # bother with shared thread memory when the amount of time and memory it takes to generate even the largest product
+    # is fairly trivial.
     if total_dice not in dice_rolls:
         dice_rolls[total_dice] = list(itertools.product(range(1, DICE_SIDES + 1), repeat=total_dice))
 
@@ -41,7 +44,7 @@ def calculate_action_total(action_total: int) -> List[str]:
         percent_success, total_tries = get_success_rate(action_total, danger_total)
         results = "" if percent_success < MAX_SUCCESS_PERC else " - Good!"
         result_string = f"{action_total} vs {danger_total} - {percent_success:2.0f}% out of {total_tries:12,} " \
-                        f"tries{results}"
+                        f"combinations{results}"
         action_results.append(result_string)
         if percent_success < MAX_SUCCESS_PERC:
             # We stop calculating once we're passed this value, so we can go on to the next action total
@@ -64,4 +67,9 @@ def main():
 
 
 if __name__ == '__main__':
+    start = time.perf_counter()
     main()
+    end = time.perf_counter()
+    perf_span = end - start
+    time_delta = datetime.timedelta(seconds=int(perf_span))
+    print(f"Process took {time_delta} long to process")

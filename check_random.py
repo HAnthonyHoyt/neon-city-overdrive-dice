@@ -1,9 +1,11 @@
+import datetime
 import itertools
 import random
+import time
 
 from lib import resolve_roll, is_success_roll, MAX_SUCCESS_PERC, MAX_ACTION_DICE
 
-TOTAL_ATTEMPTS = 1000000
+TOTAL_ATTEMPTS = 1_000_000
 
 
 def roll_die() -> int:
@@ -36,4 +38,9 @@ def main():
 
 
 if __name__ == '__main__':
+    start = time.perf_counter()
     main()
+    end = time.perf_counter()
+    perf_span = end - start
+    time_delta = datetime.timedelta(seconds=int(perf_span))
+    print(f"Process took {time_delta} long to process")
