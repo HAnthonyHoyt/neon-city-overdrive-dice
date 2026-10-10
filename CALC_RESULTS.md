@@ -1,8 +1,7 @@
 # Calculated Roll Results
 
-A heads-up, this script takes so long, that I've not had the patience to wait for it to complete all the possible
-results with 6 action dice. What I have here for now, is up to 6 action dice and 6 danger dice. As soon as I learn the
-results of all the other combinations, I'll post them here:
+These are sample results. The calculated script now counts matching die-face totals and can compute larger pools quickly.
+Run `python check_calc.py --max-action-dice 40` to explore beyond this table:
 
 ```commandline
 1 vs 0 - 50% out of              6 combinations
@@ -37,14 +36,12 @@ results of all the other combinations, I'll post them here:
 
 ## What the results say
 
-If you looked at the random results first, you'll notice that the results line up nearly perfectly between the two. And
-like with the random result, the conclusion is the same. Don't add more danger dice than action dice. Otherwise, the
-player will have less than a 70% chance of success.
+The random and calculated results agree closely. The 70% cutoff depends on the pool: six action dice and seven danger
+dice still succeed about 71.87% of the time.
 
 ## What is the script doing
 
-For this version of the script, it's attempting to go through every single die combination for the entire pool of dice.
-Each time you add a new die, you increase the number of combinations by 6 times. So once the player has 7 dice in
-total (A combination of action and danger dice) we're talking about over a million dice combinations. So that takes a
-pretty long time to calculate all the combinations. I've had to create a separate script to calculate the final values
-and once that's done, I'll update this message.
+The script counts dice by face value. For each face that can succeed (4, 5, or 6), it counts how many action and danger
+dice show that value. A roll fails when the danger count is at least the action count for all three faces. The remaining
+dice can show any of the three lower values. These weighted counts give the same exact total as enumerating every roll
+without generating billions of individual combinations.
