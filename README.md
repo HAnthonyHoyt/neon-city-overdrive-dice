@@ -12,7 +12,7 @@ of success.
 There are two versions of this script
 
 * Random number generation
-* All possible combinations
+* Exact calculation
 
 To run the scripts, you just need to have Python 3 installed and issue one of the following commands
 
@@ -20,14 +20,23 @@ To run the scripts, you just need to have Python 3 installed and issue one of th
 
 > python check_random.py
 
-**All Combinations**
+**Exact Calculation**
 
 > python check_calc.py
 
-Each script will start with one action die and work it's way up to 6 action dice before quitting. The maximum number of
-danger dice is based on the success rate. If the last die poll of action and danger dice resulted in a success rate of
-less than 70%, then the script will move up to the next level of action dice and reset the danger dice to 0 to start all
-over again.
+To calculate larger action dice pools, pass a maximum:
+
+> python check_calc.py --max-action-dice 40
+
+The calculated version counts groups of dice with the same face value instead of visiting every ordered roll. It still
+returns exact probabilities, but its work grows much more slowly than the number of possible rolls. Dice below the
+success threshold are grouped together; for each successful face, a roll fails only when danger dice match or exceed
+the action dice showing that face.
+
+By default, each script starts with one action die and works up to 6 action dice. The calculated script's maximum can be
+changed with `--max-action-dice`. The maximum number of danger dice is based on the success rate. If the last pool of
+action and danger dice resulted in a success rate of less than 70%, then the script moves to the next action dice total
+and starts again with zero danger dice.
 
 70% was set based on a quote from a Reddit post
 (<https://www.reddit.com/r/rpg/comments/lil3al/statistical_analysis_of_neon_city_overdrives_core/>). The quote is
@@ -46,6 +55,8 @@ try and see for themselves.
 
 ## Results
 
-You can see the results using the random method in [Random Die Results](RAND_RESULTS.md) page. Currently, I don't have
-the results for the fully calculated results, but I have partial results (up to 5 action dice) in the
-[Calculated Die Results](CALC_RESULTS.md) page.
+You can see sample results using the random method in [Random Die Results](RAND_RESULTS.md) and the calculated method
+in [Calculated Die Results](CALC_RESULTS.md). The calculated script can now produce results beyond those recorded there.
+
+For the maximum danger dice that keep success at least 70% with 1 to 40 action dice, see
+[Maximum Danger Dice by Action Dice](MAX_DANGER_DICE.md).
